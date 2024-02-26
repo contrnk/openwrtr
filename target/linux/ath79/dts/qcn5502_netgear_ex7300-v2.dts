@@ -131,6 +131,7 @@
 		compatible = "jedec,spi-nor";
 		reg = <0>;
 		spi-max-frequency = <25000000>;
+		m25p,fast-read;
 
 		partitions {
 			compatible = "fixed-partitions";
@@ -139,48 +140,19 @@
 
 			partition@0 {
 				label = "u-boot";
-				reg = <0x000000 0x040000>;
+				reg = <0x000000 0x40000>;
 				read-only;
 			};
 
 			partition@40000 {
 				label = "u-boot-env";
-				reg = <0x040000 0x010000>;
+				reg = <0x040000 0x10000>;
 				read-only;
 			};
-
+			
 			partition@50000 {
-				label = "config";
-				reg = <0x050000 0x010000>;
-			};
-
-			partition@60000 {
-				label = "pot";
-				reg = <0x060000 0x010000>;
-				read-only;
-			};
-
-			partition@70000 {
-				label = "firmware";
-				reg = <0x70000 0xe30000>;
-				compatible = "denx,uimage";
-			};
-
-			partition@ea0000 {
-				label = "rae";
-				reg = <0xea0000 0x100000>;
-				read-only;
-			};
-
-			partition@fa0000 {
-				label = "oopsdump";
-				reg = <0xfa0000 0x40000>;
-				read-only;
-			};
-
-			partition@fe0000 {
 				label = "artmtd";
-				reg = <0xfe0000 0x10000>;
+				reg = <0x050000 0x10000>;
 
 				compatible = "nvmem-cells";
 				#address-cells = <1>;
@@ -199,9 +171,9 @@
 				};
 			};
 
-			partition@ff0000 {
+			partition@60000 {
 				label = "art";
-				reg = <0xff0000 0x10000>;
+				reg = <0x060000 0x10000>;
 				read-only;
 
 				compatible = "nvmem-cells";
@@ -209,12 +181,19 @@
 				#size-cells = <1>;
 
 				cal_art_1000: cal@1000 {
-					reg = <0x1000 0x540>;
+					reg = <0x1000 0x440>;
 				};
 
 				precal_art_5000: precal@5000 {
 					reg = <0x5000 0x2f20>;
 				};
+                        };
+                        
+			partition@70000 {
+				label = "firmware";
+				reg = <0x070000 0x1fa0000>;
+				compatible = "denx,uimage";
+				
 			};
 		};
 	};
