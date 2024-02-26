@@ -1966,8 +1966,8 @@ define Device/netgear_ex7300-v2
   DEVICE_ALT4_VENDOR := NETGEAR
   DEVICE_ALT4_MODEL := EX7320
   NETGEAR_BOARD_ID := EX7300v2series
-  NETGEAR_HW_ID := 29765907+16+0+128
-  IMAGE_SIZE := 14528k
+  NETGEAR_HW_ID := 29765907+32+128
+  IMAGE_SIZE := 32384k
   IMAGES += factory.img
   IMAGE/default := append-kernel | pad-offset $$$$(BLOCKSIZE) 64 | \
 	netgear-rootfs | pad-rootfs
