@@ -2574,3 +2574,11 @@ define Device/zyxel_nbg6616
   SUPPORTED_DEVICES += nbg6616
 endef
 TARGET_DEVICES += zyxel_nbg6616
+
+define Device/maselink_ap2600i
+  SOC := ar9344
+  DEVICE_VENDOR := MASELink
+  DEVICE_MODEL := AP2600I
+  IMAGE_SIZE := 16000k
+endef
+TARGET_DEVICES += maselink_ap2600i
