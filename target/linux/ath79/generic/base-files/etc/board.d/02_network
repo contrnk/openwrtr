@@ -125,6 +125,7 @@ ath79_setup_interfaces()
 	zyxel,nwa1100-nh|\
 	zyxel,nwa1121-ni|\
 	zyxel,nwa1123-ac|\
+	maselink,ap2600i|\
 	zyxel,nwa1123-ni)
 		ucidef_set_interface_lan "eth0"
 		;;
