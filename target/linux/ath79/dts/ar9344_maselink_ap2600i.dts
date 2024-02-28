@@ -1,0 +1,159 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/dts-v1/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+
+#include "ar9344.dtsi"
+
+/ {
+	compatible = "maselink,ap2600i", "qca,ar9344";
+	model = "MASELink AP2600I";
+
+	aliases {
+		led-boot = &led_pgreen;
+		led-failsafe = &led_pred;
+		led-running = &led_pgreen;
+		led-upgrade = &led_pgreen;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		led_pred: power1 {
+			label = "red:power";
+			gpios = <&gpio 11 GPIO_ACTIVE_LOW>;
+		};
+
+		led_pgreen: power2 {
+			label = "green:power";
+			gpios = <&gpio 12 GPIO_ACTIVE_LOW>;
+		};
+
+		run {
+			label = "green:run";
+			gpios = <&gpio 13 GPIO_ACTIVE_LOW>;
+		};
+
+		wlan {
+			label = "green:wlan";
+			gpios = <&gpio 14 GPIO_ACTIVE_LOW>;
+			linux,default-trigger = "phy0tpt";
+		};
+
+	};
+
+	keys {
+		compatible = "gpio-keys-polled";
+		poll-interval = <20>;
+
+		reset {
+			label = "reset";
+			linux,code = <KEY_RESTART>;
+			gpios = <&gpio 15 GPIO_ACTIVE_LOW>;
+			debounce-interval = <60>;
+		};
+	};
+};
+
+&ref {
+	clock-frequency = <40000000>;
+};
+
+&uart {
+	status = "okay";
+};
+
+&spi {
+	status = "okay";
+
+	flash@0 {
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <25000000>;
+		m25p,fast-read;
+		
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			partition@0 {
+				label = "u-boot";
+				reg = <0x000000 0x040000>;
+				read-only;
+			};
+
+			partition@40000 {
+				label = "u-boot-env";
+				reg = <0x040000 0x010000>;
+			};
+			
+			art: partition@50000 {
+				label = "art";
+				reg = <0x050000 0x010000>;
+				read-only;
+			};
+			
+			partition@60000 {
+				compatible = "denx,uimage";
+				label = "firmware";
+				reg = <0x060000 0x1fa0000>;
+			};
+		};
+	};
+};
+
+&mdio0 {
+	status = "okay";
+
+	phy4: ethernet-phy@0 {
+		reg = <4>;
+		eee-broken-100tx;
+		eee-broken-1000t;
+	};
+};
+
+&eth0 {
+	status = "okay";
+
+	pll-data = <0x0e000000 0x00000101 0x00001313>;
+
+	mtd-mac-address = <&art 0x0>;
+
+	phy-mode = "rgmii-id";
+	phy-handle = <&phy4>;
+
+	gmac-config {
+		device = <&gmac>;
+		rgmii-gmac0 = <1>;
+		rxd-delay = <3>;
+		rxdv-delay = <3>;
+	};
+};
+
+&pcie {
+	status = "okay";
+
+	ath9k: wifi@0,0,0 {
+		compatible = "pci168c,0030";
+		reg = <0x0 0 0 0 0>;
+		qca,no-eeprom;
+		qca,disable-5ghz;
+		mtd-mac-address = <&art 0x5000>;
+		mtd-mac-address-increment = <(-2)>;
+		#gpio-cells = <2>;
+		gpio-controller;
+	};
+};
+
+&wmac {
+	status = "okay";
+
+	qca,disable-5ghz;
+
+	mtd-cal-data = <&art 0x1000>;
+	mtd-mac-address = <&art 0x0>;
+	mtd-mac-address-increment = <(-1)>;
+};
+
