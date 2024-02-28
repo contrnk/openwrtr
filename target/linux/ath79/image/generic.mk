@@ -2579,6 +2579,6 @@ define Device/maselink_ap2600i
   SOC := ar9344
   DEVICE_VENDOR := MASELink
   DEVICE_MODEL := AP2600I
-  IMAGE_SIZE := 16000k
+  IMAGE_SIZE := 32384k
 endef
 TARGET_DEVICES += maselink_ap2600i
