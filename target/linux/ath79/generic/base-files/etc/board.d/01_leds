@@ -521,6 +521,10 @@ zbtlink,zbt-wd323)
 	ucidef_set_led_switch "lan1" "LAN1" "orange:lan1" "switch0" "0x10"
 	ucidef_set_led_switch "lan2" "LAN2" "orange:lan2" "switch0" "0x08"
 	;;
+maselink,ap2600i)
+	ucidef_set_led_netdev "wan" "WAN" "ap2600i:green:run" "eth0"
+	ucidef_set_led_wlan "wlan" "WLAN" "ap2600i:green:wlan" "phy0tpt"
+        ;;
 zyxel,nwa1100-nh)
 	ucidef_set_led_netdev "lan_data" "LAN_DATA" "amber:lan" "eth0" "tx rx"
 	ucidef_set_led_netdev "lan_link" "LAN_LINK" "green:lan" "eth0" "link"
